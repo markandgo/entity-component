@@ -10,23 +10,11 @@ function Entity:addComponent(...)
 	for _,name in ipairs{...} do
 		-- Add the component from the registry
 		-- Add the entity reference to the component
-		local component        = ComponentRegistry[name](self)
-		component.Entity       = self
-		self[component:type()] = component
+		if not ComponentRegistry[name] then error('Component does not exist: '..name) end
+		local component  = ComponentRegistry[name](self)
+		component.Entity = self
+		self[name]       = component
 		table.insert(self.component_order,component)
-		
-		-- Add missing dependencies to the entity and component
-		if component._dependencies then 
-			for name in pairs(component._dependencies) do
-				local subcomponent            = self[name] or ComponentRegistry[name](self)
-				subcomponent.Entity           = self
-				component[subcomponent:type()]= subcomponent
-				self[subcomponent:type()]     = subcomponent
-				
-				if not self[name] then table.insert(self.component_order,subcomponent) end
-			end
-		end
-		
 	end
 end
 
@@ -45,7 +33,7 @@ function Entity:removeComponent(...)
 	end
 end
 
-function Entity:callback(callback_name,...)
+function Entity:trigger(callback_name,...)
 	for i,component in ipairs(self.component_order) do
 		if component[callback_name] then component[callback_name](component,...) end
 	end

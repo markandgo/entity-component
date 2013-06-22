@@ -6,11 +6,11 @@ Component = Class 'Component'
 -- Component.Entity
 -- Component[SubcomponentName]
 
-function Component:init(entity)
+function Component:init(Entity)
 
 end
 
-function Component:destroy(entity)
+function Component:destroy(Entity)
 
 end
 
@@ -20,11 +20,22 @@ function Component:extend(name)
 	return new_component
 end
 
--- Components can depend on other components
--- This function adds dependencies to the component when adding to an entity.
-function Component:require(...)
-	self._require = {}
+-- This function automatically adds dependencies to the component and entity.
+-- This function is not required as other components can be manually added.
+function Component:require(Entity,...)
 	for _,name in ipairs{...} do
-		self._require[name] = true
+		
+		-- Check for existence and circular dependencies
+		if not ComponentRegistry[name] then error('Component does not exist: '..name) end
+		
+		local Entity_comp = Entity[name]
+		if Entity_comp == true then error('Loop in loading component: '..name) end
+		
+		if not Entity_comp then 
+			Entity[name]  = true
+			Entity_comp   = ComponentRegistry[name](Entity) 
+		end
+		self[name]          = Entity_comp
+		Entity[name]        = Entity_comp
 	end
 end
