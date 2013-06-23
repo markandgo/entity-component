@@ -50,18 +50,60 @@ function RenderBox:draw()
 end
 
 -- ##############################################
+-- PHYSICS
+-- ##############################################
+
+Physics = lib.Component:extend 'Physics'
+
+function Physics:init(entity)
+	self.speed = 1000
+end
+
+-- ##############################################
+-- FOURWAY COMPONENT
+-- ##############################################
+
+FourWay = lib.Component:extend 'FourWay'
+
+function FourWay:init(entity)
+	self:require(entity,'Position','Physics')
+end
+
+function FourWay:update(dt)
+	local pos   = self.Entity.Position
+	local speed = self.Entity.Physics.speed
+	if love.keyboard.isDown 'up' then
+		pos.y = pos.y - speed*dt
+	elseif love.keyboard.isDown 'down' then
+		pos.y = pos.y + speed*dt
+	end
+	
+	if love.keyboard.isDown 'left' then
+		pos.x = pos.x - speed*dt
+	elseif love.keyboard.isDown 'right' then
+		pos.x = pos.x + speed*dt
+	end
+end
+
+-- ##############################################
 -- TESTING ENTITY AND CLONING
 -- ##############################################
 
-MyEntity = lib.Entity('Color','Box','RenderBox')
+MyEntity = lib.Entity('Color','Box','RenderBox','FourWay')
 
 MyEntity2  = MyEntity:clone()
 local pos  = MyEntity2.Position
 pos.x,pos.y= 100,0
 local color= MyEntity2.Color
 color[2]   = 255
+
+function love.update(dt)
+	MyEntity:trigger('update',dt)
+end
 	
 function love.draw()
 	MyEntity:trigger 'draw'
 	MyEntity2:trigger 'draw'
+	
+	love.graphics.print(love.timer.getFPS(),750,0)
 end
