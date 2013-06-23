@@ -1,6 +1,7 @@
-ComponentRegistry = {}
+local ComponentRegistry = {}
 
-Component = Class 'Component'
+local Class     = lib.Class
+local Component = Class 'Component'
 
 -- Reserved:
 -- Component.Entity
@@ -39,3 +40,6 @@ function Component:require(Entity,...)
 		Entity[name]        = Entity_comp
 	end
 end
+
+lib.Component         = Component
+lib.ComponentRegistry = ComponentRegistry

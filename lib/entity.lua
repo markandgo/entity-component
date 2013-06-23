@@ -1,4 +1,5 @@
-Entity = Class 'Entity'
+local Class = lib.Class
+Entity      = Class 'Entity'
 
 function Entity:init(...)
 	self.component_order = {}
@@ -10,8 +11,8 @@ function Entity:addComponent(...)
 	for _,name in ipairs{...} do
 		-- Add the component from the registry
 		-- Add the entity reference to the component
-		if not ComponentRegistry[name] then error('Component does not exist: '..name) end
-		local component  = ComponentRegistry[name](self)
+		if not lib.ComponentRegistry[name] then error('Component does not exist: '..name) end
+		local component  = lib.ComponentRegistry[name](self)
 		component.Entity = self
 		self[name]       = component
 		table.insert(self.component_order,component)
@@ -38,3 +39,5 @@ function Entity:trigger(callback_name,...)
 		if component[callback_name] then component[callback_name](component,...) end
 	end
 end
+
+lib.Entity = Entity

@@ -1,4 +1,4 @@
-State = {}
+local State = {}
 
 function State.init(self)
 	self.__States = self.__States or {}
@@ -36,3 +36,5 @@ function State.getState(self)
 	local meta = getmetatable(self)
 	if meta then return meta.__Statename, meta.__index end
 end
+
+lib.State = State

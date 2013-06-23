@@ -11,7 +11,8 @@ end
 
 local addHandler = function(Event,handler) Event[handler] = handler end
 
-Event = Class 'Event' 
+local Class = lib.Class
+local Event = Class 'Event' 
 
 function Event:init()
 	self.Events = {}
@@ -43,3 +44,5 @@ function Event.trigger(name,...)
 		handler(...)
 	end
 end
+
+lib.Event = Event

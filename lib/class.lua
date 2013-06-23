@@ -1,6 +1,6 @@
 -- simple Class
 -------------------------------------------------
-Class          = {__type = 'Object'}
+local Class    = {__type = 'Object'}
 Class.__index  = Class
 
 function Class:new(...)
@@ -73,3 +73,5 @@ function Class:clone()
 end
 
 setmetatable(Class,{__call = Class.new})
+
+lib.Class = Class
