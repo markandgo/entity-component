@@ -1,0 +1,1 @@
+Tesing of entity component concept

@@ -1,0 +1,22 @@
+Unity
+	Scripts are components which can be attached to game objects.
+	Components are instantiated when attaching to game objects.
+	Components have overridable callbacks.
+	Whenever an event occurs for an object, the event is passed to all components with the callbacks.
+	Objects can form a hierarchy where objects can parent other objects.
+	Child objects transform relatively to their parent objects.
+	
+Crafty
+	Each entity has its own event manager.
+	There is also a global event manager.
+	Components can trigger an event and send the event to all registered callbacks on the entity.
+	Components have their own overridable callbacks.
+
+EntityJS
+	Each entity has its own event manager.
+	Entities can subscribe/trigger callbacks to/from their event manager.
+	Each component also has its own event manager.
+	A components triggers its callbacks when an entity uses its methods.
+	
+An object may have components trigger events. The component would check if the object has the required 
+event handler and call the handler and pass the necessary arguments.
