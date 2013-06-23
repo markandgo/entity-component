@@ -2,8 +2,8 @@ path = ...
 -- Generic module name
 lib  = {}
 
-require(path..'.class')
-require(path..'.component')
-require(path..'.entity')
+require(path..'.core.class')
+require(path..'.core.component')
+require(path..'.core.entity')
 
 return lib
